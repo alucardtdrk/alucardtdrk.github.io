@@ -133,7 +133,7 @@ async function start() {
       if(open&&progress>.76&&!document.body.classList.contains('glass-open')){
         document.body.classList.add('glass-open');document.querySelector(destination)?.scrollIntoView({behavior:'instant'});
       }
-      if(elapsed===1){transitioning=false;progress=target;stage.inert=open;if(open)back.focus();else pieces[0].dom.querySelector('a')?.focus({preventScroll:true});}
+      if(elapsed===1){transitioning=false;progress=target;stage.inert=open;if(open){back.focus({preventScroll:true});requestAnimationFrame(()=>{document.querySelector(destination)?.scrollIntoView({behavior:'instant'});});}else pieces[0].dom.querySelector('a')?.focus({preventScroll:true});}
     }
     if(open&&progress===1){renderer.clear();return;}
     group.rotation.y=THREE.MathUtils.damp(group.rotation.y,active&&!open?pointer.x*.122-.021:0,3.3,dt);group.rotation.x=THREE.MathUtils.damp(group.rotation.x,active&&!open?-pointer.y*.096+.014:0,3.3,dt);

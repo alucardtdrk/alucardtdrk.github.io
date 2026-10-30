@@ -1,5 +1,6 @@
 const scene = document.querySelector('.stack-scene');
 const ring = scene.querySelector('.stack-ring');
+const cardStep = 360 / scene.querySelectorAll('.stack-card').length;
 let dragged = false;
 let resumeRotation = () => {};
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -53,14 +54,14 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   scene.addEventListener('keydown', event => {
     if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
     event.preventDefault(); takeControl();
-    angle += event.key === 'ArrowRight' ? 45 : -45;
+    angle += event.key === 'ArrowRight' ? cardStep : -cardStep;
     render();
   });
   scene.addEventListener('focusin', event => {
     const card = event.target.closest('.stack-card');
     if (!card || pointer !== null || !card.matches(':focus-visible')) return;
     takeControl();
-    angle = -Number(card.style.getPropertyValue('--index')) * 45;
+    angle = -Number(card.style.getPropertyValue('--index')) * cardStep;
     render();
   });
 }
@@ -71,6 +72,8 @@ const details = {
   TypeScript: ['Clareza nos contratos do código', 'O Fluxora utiliza TypeScript em uma aplicação que conecta interface e servidor para acompanhar automações n8n.', ['Tipagem', 'Integração entre interface e API', 'Organização do código'], 'Fluxora', 'https://github.com/alucardtdrk/Fluxora'],
   n8n: ['Processos conectados de ponta a ponta', 'Tenho conhecimento avançado em n8n, com experiência em automações financeiras e operacionais, integrações com APIs e webhooks.', ['Cobranças e conciliação bancária', 'Onboarding e offboarding', 'Pipefy e Conta Azul'], 'Fluxora', 'https://github.com/alucardtdrk/Fluxora'],
   React: ['Interfaces para acompanhar a operação', 'No Fluxora, React compõe a interface que organiza a visão geral, o catálogo de workflows e o histórico de execuções das automações.', ['Componentes de interface', 'Visualização de dados operacionais', 'Estados de carregamento e ausência de dados'], 'Fluxora', 'https://github.com/alucardtdrk/Fluxora'],
+  'Next.js': ['Aplicações completas para a operação', 'Utilizo Next.js nas aplicações de reservas de sala e reset de senha de terceiros, conectando interfaces, rotas de API e automações n8n.', ['Rotas de API e lógica no servidor', 'Autenticação Google no reset de terceiros', 'Integrações com n8n e serviços corporativos'], null, null],
+  'Firebase / Firestore': ['Estado e persistência das reservas', 'Na aplicação de reservas de sala, utilizo Firebase/Firestore para armazenar o estado das reservas e apoiar o controle de confirmações e cancelamentos.', ['Persistência de dados no Firestore', 'Integração pelo servidor com Firebase Admin', 'Estado das reservas conectado ao fluxo n8n'], null, null],
   PostgreSQL: ['Dados como parte da solução', 'PostgreSQL faz parte do meu repertório de tecnologias de banco de dados. É uma competência complementar ao meu foco em desenvolvimento e integração de sistemas.', ['Banco de dados relacional', 'Organização de dados', 'Desenvolvimento de sistemas'], null, null],
   Git: ['Evolução do código com histórico', 'Utilizo Git no versionamento dos meus projetos e tenho formação complementar em Git e GitHub pela Rocketseat.', ['Versionamento', 'Histórico de alterações', 'Organização dos projetos'], 'Meus repositórios', 'https://github.com/alucardtdrk?tab=repositories'],
   GitHub: ['Projetos que mostram minha evolução', 'Mantenho projetos públicos no GitHub como parte da minha evolução em desenvolvimento, incluindo o Fluxora e a API RESTful.', ['Repositórios públicos', 'Documentação dos projetos', 'Compartilhamento de código'], 'Conhecer meu GitHub', 'https://github.com/alucardtdrk']

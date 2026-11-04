@@ -57,13 +57,6 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
     angle += event.key === 'ArrowRight' ? -cardStep : cardStep;
     render();
   });
-  document.querySelectorAll('.stack-controls button').forEach(button=>{
-    button.addEventListener('click',()=>{
-      takeControl();
-      angle += Number(button.dataset.stackDirection) * cardStep;
-      render();
-    });
-  });
   scene.addEventListener('focusin', event => {
     const card = event.target.closest('.stack-card');
     if (!card || pointer !== null || !card.matches(':focus-visible')) return;
@@ -101,7 +94,7 @@ scene.addEventListener('click', event => {
   if (!card || (dragged && event.detail !== 0)) return;
   const name = card.querySelector('span').textContent;
   const [subtitle, description, topics, label, url] = details[name];
-  dialog.querySelector('.skill-icon').src = card.querySelector('img').getAttribute('src');
+  dialog.querySelector('.skill-icon').src = card.querySelector('.stack-icon').dataset.src;
   dialog.querySelector('#skill-name').textContent = name;
   dialog.querySelector('.skill-subtitle').textContent = subtitle;
   dialog.querySelector('.skill-description').textContent = description;

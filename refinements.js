@@ -1,15 +1,48 @@
 const projectDetails=document.querySelector('#fluxora-case');
 const detailControllers=new Map();
-function revealStretchedCards(){
-  if(!matchMedia('(min-width: 761px)').matches)return;
-  document.querySelectorAll('.automation-column>.automation-case:last-child>.project-case').forEach(details=>{
-    // O margin-top automático recebe o espaço extra do card esticado.
-    if(!details.open&&parseFloat(getComputedStyle(details).marginTop)>4){
-      detailControllers.get(details)(true);
-    }
+if(typeof HTMLDialogElement!=='undefined'&&HTMLDialogElement.prototype.showModal){
+  const panel=document.createElement('dialog');
+  panel.className='automation-dialog';
+  panel.id='automation-dialog';
+  panel.setAttribute('aria-labelledby','automation-title');
+  panel.innerHTML='<header class="automation-dialog-header"><span class="eyebrow">Por dentro da automação</span><button type="button" class="automation-close" aria-label="Fechar detalhes da automação" autofocus>×</button></header><div class="automation-dialog-body"><div class="number automation-category"></div><h2 id="automation-title"></h2><p class="automation-description"></p><div class="automation-context"></div><div class="automation-content"></div></div>';
+  document.body.append(panel);
+  let opener=null;
+  panel.querySelector('.automation-close').addEventListener('click',()=>panel.close());
+  panel.addEventListener('click',event=>{
+    if(event.target!==panel)return;
+    const bounds=panel.getBoundingClientRect();
+    if(event.clientX<bounds.left||event.clientX>bounds.right||event.clientY<bounds.top||event.clientY>bounds.bottom)panel.close();
+  });
+  panel.addEventListener('close',()=>{
+    document.body.classList.remove('automation-open');
+    opener?.focus({preventScroll:true});
+  });
+  document.querySelectorAll('.automation-case').forEach(card=>{
+    const details=card.querySelector('.project-case');
+    const trigger=document.createElement('button');
+    trigger.type='button';
+    trigger.className='case-trigger';
+    trigger.setAttribute('aria-haspopup','dialog');
+    trigger.setAttribute('aria-controls',panel.id);
+    trigger.setAttribute('aria-label','Ver como funciona: '+card.querySelector('h3').textContent);
+    trigger.innerHTML='Ver como funciona <span aria-hidden="true">↗</span>';
+    details.before(trigger);
+    details.hidden=true;
+    trigger.addEventListener('click',()=>{
+      opener=trigger;
+      panel.querySelector('.automation-category').textContent=card.querySelector('.number').textContent;
+      panel.querySelector('#automation-title').textContent=card.querySelector('h3').textContent;
+      panel.querySelector('.automation-description').textContent=card.querySelector(':scope > p').textContent;
+      panel.querySelector('.automation-context').replaceChildren(...[...card.querySelectorAll(':scope > .tags,:scope > .case-metrics')].map(node=>node.cloneNode(true)));
+      panel.querySelector('.automation-content').replaceChildren(...[...details.children].filter(node=>node.tagName!=='SUMMARY').map(node=>node.cloneNode(true)));
+      document.body.classList.add('automation-open');
+      panel.showModal();
+      panel.scrollTop=0;
+    });
   });
 }
-document.querySelectorAll('.project-case').forEach(details=>{
+document.querySelectorAll('.project-case:not([hidden])').forEach(details=>{
   const summary=details.querySelector('summary');
   const content=document.createElement('div');
   content.className='case-content';
@@ -23,7 +56,7 @@ document.querySelectorAll('.project-case').forEach(details=>{
     fade?.cancel();
     details.style.height='';
     details.style.overflow='';
-    if(matchMedia('(prefers-reduced-motion: reduce)').matches){details.open=next;if(next&&details.closest('.automation-column'))revealStretchedCards();return;}
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches){details.open=next;return;}
     const wasOpen=details.open;
     details.open=false;
     const collapsed=details.getBoundingClientRect().height;
@@ -37,7 +70,6 @@ document.querySelectorAll('.project-case').forEach(details=>{
       details.style.overflow='';
       animation.cancel();animation=null;
       fade.cancel();fade=null;
-      if(next&&details.closest('.automation-column'))revealStretchedCards();
     };
   }
   summary.addEventListener('click',event=>{event.preventDefault();setExpanded(!expanded);});

@@ -1,5 +1,5 @@
 try {
-  await import('./glass.js?v=performance');
+  await import('./glass.js?v=diagonal-mobile');
 } catch (error) {
   console.warn('Modo estático ativado: não foi possível carregar o vidro.', error);
 } finally {

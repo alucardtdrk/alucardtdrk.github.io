@@ -57,7 +57,7 @@ async function start() {
   }
   function rebuild(t) {
     const p=pattern(t),cells=[[0,1,9,7,8],[1,2,10,9],[2,3,11,10],[9,10,11,6,7],[3,4,5,6,11]];
-    const mobileCuts=[0,.20,.80,.86,.93,1];const bodyOutlines=portrait?mobileCuts.slice(0,-1).map((cut,i)=>[[-pw/2,ph/2-cut*ph-navH/2-7],[pw/2,ph/2-cut*ph-navH/2-7],[pw/2,ph/2-mobileCuts[i+1]*ph-navH/2-7],[-pw/2,ph/2-mobileCuts[i+1]*ph-navH/2-7]]):cells.map(c=>c.map(i=>p[i]));
+    const bodyOutlines=cells.map(c=>c.map(i=>p[i]));
     const top=bh/2;const outlines=[[[ -bw/2,top],[bw/2,top],[bw/2,top-navH],[-bw/2,top-navH]],...bodyOutlines];
     outlines.forEach((points,i)=>{
       const s=shape(points),g=new THREE.ExtrudeGeometry(s,{depth:13*scale,bevelEnabled:true,bevelThickness:2.6*scale,bevelSize:2.6*scale,bevelSegments:3,steps:1,curveSegments:6});

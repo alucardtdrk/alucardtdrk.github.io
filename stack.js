@@ -2,11 +2,11 @@ const scene = document.querySelector('.stack-scene');
 const ring = scene.querySelector('.stack-ring');
 const cardStep = 360 / scene.querySelectorAll('.stack-card').length;
 let dragged = false;
-let resumeRotation = () => {};
+let resumeRotation = (preserveDrag = false) => {};
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   scene.tabIndex = 0;
   scene.setAttribute('aria-label', 'Tecnologias. Arraste para girar ou use as setas do teclado.');
-  let angle = 0, pointer = null, startX = 0, startAngle = 0, controlled = false;
+  let angle = 0, pointer = null, startX = 0, startY = 0, startAngle = 0, controlled = false;
   function takeControl() {
     if (controlled) return;
     controlled = true;
@@ -18,11 +18,11 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   function render() {
     ring.style.transform = `rotateX(-8deg) rotateY(${angle}deg)`;
   }
-  resumeRotation = () => {
+  resumeRotation = (preserveDrag = false) => {
     const time = ((angle % 360 + 360) % 360) / 360 * 32000;
     controlled = false;
     pointer = null;
-    dragged = false;
+    dragged = preserveDrag && dragged;
     ring.style.animation = '';
     ring.style.transform = '';
     const animation = ring.getAnimations()[0];
@@ -31,14 +31,17 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   scene.addEventListener('pointerdown', event => {
     if (!event.isPrimary || event.button !== 0) return;
     takeControl();
-    pointer = event.pointerId; startX = event.clientX; startAngle = angle;
+    pointer = event.pointerId; startX = event.clientX; startY = event.clientY; startAngle = angle;
     dragged = false;
   });
   scene.addEventListener('pointermove', event => {
-    if (event.pointerId !== pointer || event.buttons !== 1) return;
-    if (!dragged && Math.abs(event.clientX - startX) < 6) return;
-    dragged = true;
-    scene.setPointerCapture(pointer);
+    if (event.pointerId !== pointer || (event.pointerType === 'mouse' && event.buttons !== 1)) return;
+    if (!dragged) {
+      const dx=Math.abs(event.clientX-startX),dy=Math.abs(event.clientY-startY);
+      if (dx < 6 || dy > dx) return;
+      dragged = true;
+      scene.setPointerCapture(pointer);
+    }
     scene.classList.add('dragging');
     angle = startAngle + (event.clientX - startX) * .4;
     render();
@@ -47,10 +50,11 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
     if (event.pointerId !== pointer) return;
     pointer = null;
     scene.classList.remove('dragging');
+    resumeRotation(true);
   }
   scene.addEventListener('pointerup', release);
   scene.addEventListener('pointercancel', release);
-  scene.addEventListener('lostpointercapture', release);
+  scene.addEventListener('lostpointercapture', event => { if (event.target === scene) release(event); });
   scene.addEventListener('keydown', event => {
     if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
     event.preventDefault(); takeControl();

@@ -16,7 +16,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
     render();
   }
   function render() {
-    ring.style.transform = `rotateX(-12deg) rotateY(${angle}deg)`;
+    ring.style.transform = `rotateX(-8deg) rotateY(${angle}deg)`;
   }
   resumeRotation = () => {
     const time = ((angle % 360 + 360) % 360) / 360 * 32000;
@@ -54,8 +54,15 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   scene.addEventListener('keydown', event => {
     if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
     event.preventDefault(); takeControl();
-    angle += event.key === 'ArrowRight' ? cardStep : -cardStep;
+    angle += event.key === 'ArrowRight' ? -cardStep : cardStep;
     render();
+  });
+  document.querySelectorAll('.stack-controls button').forEach(button=>{
+    button.addEventListener('click',()=>{
+      takeControl();
+      angle += Number(button.dataset.stackDirection) * cardStep;
+      render();
+    });
   });
   scene.addEventListener('focusin', event => {
     const card = event.target.closest('.stack-card');

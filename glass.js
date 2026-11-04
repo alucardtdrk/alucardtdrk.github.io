@@ -118,7 +118,7 @@ async function start() {
   back.onclick=()=>{
     if(transitioning)return;
     open=false;target=0;transitionFrom=progress;transitionStart=performance.now();transitioning=true;stage.inert=true;active=false;
-    window.scrollTo({top:0,behavior:'instant'});document.body.classList.remove('glass-open');
+    window.scrollTo({top:0,behavior:'instant'});document.body.classList.remove('glass-open');last=performance.now();renderer.setAnimationLoop(animate);
   };
   document.querySelector('.skip').addEventListener('click',e=>{e.preventDefault();reveal('#projetos');});
   window.addEventListener('resize',resize);
@@ -136,11 +136,11 @@ async function start() {
       }
       if(elapsed===1){transitioning=false;progress=target;stage.inert=open;if(open){back.focus({preventScroll:true});requestAnimationFrame(()=>{document.querySelector(destination)?.scrollIntoView({behavior:'instant'});});}else pieces[0].dom.querySelector('a')?.focus({preventScroll:true});}
     }
-    if(open&&progress===1){renderer.clear();return;}
+    if(open&&progress===1){renderer.clear();renderer.setAnimationLoop(null);return;}
     group.rotation.y=THREE.MathUtils.damp(group.rotation.y,active&&!open?pointer.x*.122-.021:0,3.3,dt);group.rotation.x=THREE.MathUtils.damp(group.rotation.x,active&&!open?-pointer.y*.096+.014:0,3.3,dt);
     glowAmount.value=THREE.MathUtils.damp(glowAmount.value,active&&!open?1:0,5,dt);
     cursor.x=THREE.MathUtils.damp(cursor.x,pointer.x*W/2,7,dt);cursor.y=THREE.MathUtils.damp(cursor.y,pointer.y*H/2,7,dt);glow.value.copy(cursor);
-    if(now-geometryTime>1000/24&&!transitioning&&progress===0){rebuild(now/1000);geometryTime=now;}
+    if(now-geometryTime>1000/(active?12:4)&&!transitioning&&progress===0){rebuild(now/1000);geometryTime=now;}
     group.updateMatrixWorld(true);pieces.forEach(p=>p.pick.matrixWorld.copy(group.matrixWorld));
     ray.setFromCamera(pointer,camera);const hits=ray.intersectObjects(pieces.map(p=>p.pick),false);hover=active&&!open&&!transitioning&&hits.length?pieces.findIndex(p=>p.pick===hits[0].object):-1;
     const localHit=hits.length?group.worldToLocal(hits[0].point.clone()):new THREE.Vector3();

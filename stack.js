@@ -105,3 +105,12 @@ scene.addEventListener('click', event => {
   document.body.classList.add('skill-open');
   dialog.showModal();
 });
+
+let stackVisible=false;
+function updateStackPlayback(){
+  ring.style.animationPlayState=stackVisible&&!document.hidden&&!document.body.classList.contains('skill-open')&&!document.body.classList.contains('automation-open')?'running':'paused';
+}
+new IntersectionObserver(entries=>{stackVisible=entries[0].isIntersecting;updateStackPlayback();}).observe(scene);
+document.addEventListener('visibilitychange',updateStackPlayback);
+new MutationObserver(updateStackPlayback).observe(document.body,{attributes:true,attributeFilter:['class']});
+updateStackPlayback();

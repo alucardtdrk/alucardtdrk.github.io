@@ -57,7 +57,8 @@ async function start() {
   }
   function rebuild(t) {
     const p=pattern(t),cells=[[0,1,9,7,8],[1,2,10,9],[2,3,11,10],[9,10,11,6,7],[3,4,5,6,11]];
-    const top=bh/2;const outlines=[[[ -bw/2,top],[bw/2,top],[bw/2,top-navH],[-bw/2,top-navH]],...cells.map(c=>c.map(i=>p[i]))];
+    const mobileCuts=[0,.20,.80,.86,.93,1];const bodyOutlines=portrait?mobileCuts.slice(0,-1).map((cut,i)=>[[-pw/2,ph/2-cut*ph-navH/2-7],[pw/2,ph/2-cut*ph-navH/2-7],[pw/2,ph/2-mobileCuts[i+1]*ph-navH/2-7],[-pw/2,ph/2-mobileCuts[i+1]*ph-navH/2-7]]):cells.map(c=>c.map(i=>p[i]));
+    const top=bh/2;const outlines=[[[ -bw/2,top],[bw/2,top],[bw/2,top-navH],[-bw/2,top-navH]],...bodyOutlines];
     outlines.forEach((points,i)=>{
       const s=shape(points),g=new THREE.ExtrudeGeometry(s,{depth:13*scale,bevelEnabled:true,bevelThickness:2.6*scale,bevelSize:2.6*scale,bevelSegments:3,steps:1,curveSegments:6});
       const face=new THREE.ShapeGeometry(s,6),pos=face.attributes.position,uv=face.attributes.uv;
@@ -79,7 +80,7 @@ async function start() {
     const lines=portrait?['Sou Lucas Escouto. Conecto sistemas,','desenvolvo ferramentas e automatizo','processos com n8n e JavaScript.']:['Sou Lucas Escouto. Conecto sistemas, desenvolvo ferramentas','e transformo processos de negócio com n8n e JavaScript.'];
     lines.forEach((l,i)=>x.fillText(l,pad,sy+i*small*1.6));
     const by=sy+lines.length*small*1.6+28,buttonW=portrait?170:190,buttonH=42;
-    x.fillStyle='#2864e8';x.beginPath();x.roundRect(pad,by,buttonW,buttonH,6);x.fill();x.fillStyle='#fff';x.font='13px Inter, Arial';x.textBaseline='middle';x.fillText('Explorar meus projetos →',pad+16,by+21);x.fillStyle='#c9bedc';x.fillText('GitHub',pad+buttonW+23,by+21);x.save();x.translate(pad+buttonW+77,by+13);x.scale(16/24,16/24);x.fill(githubMark);x.restore();
+    x.fillStyle='#2864e8';x.beginPath();x.roundRect(pad,by,buttonW,buttonH,6);x.fill();x.fillStyle='#fff';x.font='13px Inter, Arial';x.textBaseline='middle';const label='Explorar meus projetos',labelSize=Math.min(13,13*(buttonW-48)/x.measureText(label).width);x.font=`${labelSize}px Inter, Arial`;x.fillText(label,pad+16,by+21);x.save();x.strokeStyle='#fff';x.lineWidth=1.5;x.lineCap='round';x.lineJoin='round';const arrowX=pad+buttonW-20,arrowY=by+21;x.beginPath();x.moveTo(arrowX-6,arrowY);x.lineTo(arrowX+4,arrowY);x.moveTo(arrowX,arrowY-4);x.lineTo(arrowX+4,arrowY);x.lineTo(arrowX,arrowY+4);x.stroke();x.restore();x.font='13px Inter, Arial';x.fillStyle='#c9bedc';x.fillText('GitHub',pad+buttonW+23,by+21);x.save();x.translate(pad+buttonW+77,by+13);x.scale(16/24,16/24);x.fill(githubMark);x.restore();
     x.font='10px Inter, Arial';x.fillStyle='#82778e';x.fillText('Lucas Escouto · Desenvolvimento & automação',pad,bh-26);if(!portrait)x.fillText('MOVA O CURSOR · EXPLORE AS CONEXÕES',bw-pad-245,bh-26);
     const links=[['Projetos','#projetos',bw-pad-245,navH/2-20,80,40],['Sobre','#sobre',bw-pad-150,navH/2-20,70,40],['Contato','#contato',bw-pad-75,navH/2-20,85,40],['Explorar meus projetos','#projetos',pad,by,buttonW,buttonH],['GitHub','https://github.com/alucardtdrk',pad+buttonW+16,by,90,buttonH]];
     const html=`<h1 style="left:${pad}px;top:${hy}px;font-size:${fs}px">Do processo<br>à solução.</h1><p style="left:${pad}px;top:${sy}px;font-size:${small}px">${lines.join('<br>')}</p>`+links.map(([label,url,l,t,w,h])=>`<a href="${url}" style="left:${l}px;top:${t}px;width:${w}px;height:${h}px">${label}</a>`).join('');

@@ -76,3 +76,5 @@ html:has(.automation-dialog[open]){scrollbar-gutter:stable}
 @keyframes connection-light{from{opacity:0}to{opacity:1}}
 @keyframes branch-light{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 @media(max-width:760px),(hover:none),(prefers-reduced-motion:reduce){.automation-case:after{transition:none}}
+
+.link-arrow{display:inline-block;vertical-align:-2px;flex-shrink:0;margin-left:4px}.text-link .link-arrow{vertical-align:-3px}@media(max-width:650px){html{scroll-padding-top:160px}.project-case{scroll-margin-top:170px}}

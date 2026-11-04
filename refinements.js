@@ -133,3 +133,6 @@ copyButton.addEventListener('click',async()=>{
   catch{status.textContent='Não foi possível copiar. Selecione o e-mail acima para copiar manualmente.';}
   finally{copyButton.disabled=false;}
 });
+
+const pageHeader=document.querySelector('body > header');
+new ResizeObserver(()=>{document.documentElement.style.scrollPaddingTop=(Math.ceil(pageHeader.getBoundingClientRect().height)+12)+'px';}).observe(pageHeader);

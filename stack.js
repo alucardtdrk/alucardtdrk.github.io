@@ -101,7 +101,7 @@ scene.addEventListener('click', event => {
   dialog.querySelector('.skill-topics').replaceChildren(...topics.map(text => { const li = document.createElement('li'); li.textContent = text; return li; }));
   const link = dialog.querySelector('.skill-project');
   link.hidden = !url;
-  if (url) { link.href = url; link.textContent = label + ' ↗'; }
+  if (url) { link.href = url; link.textContent = label; link.insertAdjacentHTML('beforeend', '<svg class="link-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>'); }
   document.body.classList.add('skill-open');
   dialog.showModal();
 });

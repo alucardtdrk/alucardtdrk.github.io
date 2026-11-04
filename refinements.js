@@ -26,7 +26,7 @@ if(typeof HTMLDialogElement!=='undefined'&&HTMLDialogElement.prototype.showModal
     trigger.setAttribute('aria-haspopup','dialog');
     trigger.setAttribute('aria-controls',panel.id);
     trigger.setAttribute('aria-label','Ver como funciona: '+card.querySelector('h3').textContent);
-    trigger.innerHTML='Ver como funciona <span aria-hidden="true">↗</span>';
+    trigger.innerHTML='Ver como funciona <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16M7 9h4M7 13h3"/></svg>';
     details.before(trigger);
     details.hidden=true;
     trigger.addEventListener('click',()=>{

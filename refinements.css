@@ -19,8 +19,9 @@ body{font-family:Inter,Arial,sans-serif}button{font-family:inherit}header nav a{
 .automation-case>.tags{margin-bottom:20px}
 .automation-case:not(:first-child)>.case-metrics{display:none}
 .case-trigger{display:flex;align-items:center;justify-content:space-between;gap:24px;width:100%;min-height:52px;margin-top:4px;padding:14px 0 0;border:0;border-top:1px solid #a185c540;background:transparent;color:#eadcff;font-size:13px;font-weight:500;text-align:left;cursor:pointer}
-.case-trigger span{display:grid;place-items:center;width:32px;height:32px;flex:none;border:1px solid #a185c54d;border-radius:50%;background:#c4a5ff0b;color:#d6b9ff;font-size:19px;transition:transform .2s,background .2s,color .2s}
-.case-trigger:hover span{transform:translate(2px,-2px);background:#c4a5ff;color:#21132f}
+.case-trigger:hover{color:var(--accent);border-top-color:#c4a5ff88}
+.case-trigger svg{flex:none;color:var(--accent);opacity:.8}
+.case-trigger:hover svg,.case-trigger:focus-visible svg{opacity:1}
 .case-trigger:focus-visible,.automation-close:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:8px}
 .automation-open{overflow:hidden}
 html:has(.automation-dialog[open]){scrollbar-gutter:stable}
@@ -44,5 +45,5 @@ html:has(.automation-dialog[open]){scrollbar-gutter:stable}
 .automation-content .room-case-result{grid-column:auto}
 @keyframes automation-enter{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
 @media(max-width:760px){.automation-dialog{width:100%;border:0;border-radius:0}.automation-dialog-header{padding:16px 22px}.automation-dialog-body{padding:28px 22px}.automation-projects>.automation-case:last-child{grid-column:auto}}
-@media(prefers-reduced-motion:reduce){.automation-dialog{animation:none}.case-trigger span{transition:none}.case-trigger:hover span{transform:none}}
+@media(prefers-reduced-motion:reduce){.automation-dialog{animation:none}}
 @media(max-width:760px){html:has(.automation-dialog[open]){scrollbar-gutter:auto}}

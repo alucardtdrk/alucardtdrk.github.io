@@ -13,3 +13,19 @@
 .stack-card:hover,.stack-card:focus-visible{box-shadow:inset 0 1px 0 #f0dcff66,0 0 30px #b781f044,0 16px 32px #0005}
 @media(max-width:650px){.stack-card{padding:18px 10px;gap:12px}.stack-card small{font-size:10px}.stack-showcase h2{font-size:26px}.stack-showcase .stack-hint{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.stack-ring{top:0}.stack-card{min-height:190px}}
+
+/* Render at 2× before the 3D projection to avoid enlarging a low-resolution layer. */
+@media(prefers-reduced-motion:no-preference){
+  .stack-card{inset:auto;left:50%;top:50%;width:320px;height:440px;margin:-220px 0 0 -160px;gap:32px;padding:48px 28px;border-width:2px;border-radius:40px;box-shadow:inset 0 2px 0 #e3d1ff24,0 24px 48px #0005;transform:rotateY(calc(36deg * var(--index))) translateZ(var(--radius)) scale(.5)}
+  .stack-card .stack-icon{width:136px;height:136px}
+  .stack-card span{font-size:32px;padding-inline:10px;margin-top:12px}
+  .stack-card small{font-size:22px}
+  .stack-card:before{box-shadow:inset 0 2px 0 #e9d6ff40,inset 2px 0 0 #e9d6ff10}
+  .stack-card:hover,.stack-card:focus-visible{box-shadow:inset 0 2px 0 #f0dcff66,0 0 60px #b781f044,0 32px 64px #0005}
+}
+@media(max-width:650px) and (prefers-reduced-motion:no-preference){
+  .stack-card{width:250px;height:360px;margin:-180px 0 0 -125px;padding:36px 20px;gap:24px}
+  .stack-card .stack-icon{width:108px;height:108px}
+  .stack-card span{font-size:28px}
+  .stack-card small{font-size:20px}
+}

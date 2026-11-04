@@ -11,3 +11,5 @@ body{font-family:Inter,Arial,sans-serif}button{font-family:inherit}header nav a{
 
 
 .automation-column{justify-content:flex-start}.automation-case:hover{transform:none}.automation-projects{overflow-anchor:none}
+
+@media(min-width:761px){.automation-columns{align-items:stretch}.automation-column>.automation-case:last-child{flex-grow:1}.automation-column>.automation-case:last-child>.project-case{margin-top:auto}}

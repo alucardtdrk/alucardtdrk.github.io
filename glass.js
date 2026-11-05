@@ -24,7 +24,7 @@ async function start() {
   const fill=new THREE.PointLight(0x7950ef,18000,2500);fill.position.set(450,-100,700);scene.add(fill);
   const group=new THREE.Group();scene.add(group);
   const stage=document.createElement('div');stage.id='glass-stage';stage.setAttribute('aria-label','Apresentação interativa em vidro');stage.append(renderer.domElement);document.body.append(stage);
-  const back=document.createElement('button');back.id='glass-back';back.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 5-7 7 7 7M4 12h16"/></svg><span>Voltar à apresentação</span>';document.querySelector('body > header').append(back);
+  const back=document.createElement('button');back.id='glass-back';back.setAttribute('aria-label','Rever abertura');back.title='Rever abertura';back.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10a9 9 0 1 1 2.6 8.4M3 4v6h6"/></svg><span>Rever abertura</span>';document.querySelector('body > header').append(back);
   let W,H,bw,bh,pw,ph,navH,scale,portrait,pieces=[],texture,open=false,target=0,progress=1,last=performance.now(),geometryTime=0,hover=-1,active=false;
   let transitionStart=performance.now(),transitionFrom=1,transitioning=true,destination='#projetos';
   const pointer=new THREE.Vector2(2,2),ray=new THREE.Raycaster(),cursor=new THREE.Vector3();

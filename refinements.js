@@ -19,7 +19,7 @@ const revealObserver=cardEffects.matches&&'IntersectionObserver' in window?new I
     revealObserver.unobserve(entry.target);
   });
 },{threshold:.08,rootMargin:'0px 0px -24px 0px'}):null;
-automationCards.forEach(card=>{
+document.querySelectorAll('.project').forEach(card=>{
   const label=card.querySelector('.number');
   const category=Object.keys(categoryIcons).find(key=>label.textContent.includes(key));
   if(category)label.insertAdjacentHTML('afterbegin','<svg class="case-category-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+categoryIcons[category]+'</svg>');
@@ -42,13 +42,25 @@ if(typeof HTMLDialogElement!=='undefined'&&HTMLDialogElement.prototype.showModal
   panel.innerHTML='<header class="automation-dialog-header"><span class="eyebrow">Por dentro da automação</span><button type="button" class="automation-close" aria-label="Fechar detalhes da automação" autofocus>×</button></header><div class="automation-dialog-body"><div class="number automation-category"></div><h2 id="automation-title"></h2><p class="automation-description"></p><div class="automation-context"></div><div class="automation-content"></div></div>';
   document.body.append(panel);
   let opener=null;
-  panel.querySelector('.automation-close').addEventListener('click',()=>panel.close());
+  let closing=false;
+  function closePanel(){
+    if(closing||!panel.open)return;
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches){panel.close();return;}
+    closing=true;
+    panel.classList.add('is-closing');
+    const animation=panel.animate([{opacity:1,transform:'translateX(0)'},{opacity:0,transform:'translateX(36px)'}],{duration:220,easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'});
+    animation.finished.then(()=>{panel.close();animation.cancel();},()=>panel.close());
+  }
+  panel.querySelector('.automation-close').addEventListener('click',closePanel);
+  panel.addEventListener('cancel',event=>{event.preventDefault();closePanel();});
   panel.addEventListener('click',event=>{
     if(event.target!==panel)return;
     const bounds=panel.getBoundingClientRect();
-    if(event.clientX<bounds.left||event.clientX>bounds.right||event.clientY<bounds.top||event.clientY>bounds.bottom)panel.close();
+    if(event.clientX<bounds.left||event.clientX>bounds.right||event.clientY<bounds.top||event.clientY>bounds.bottom)closePanel();
   });
   panel.addEventListener('close',()=>{
+    closing=false;
+    panel.classList.remove('is-closing');
     document.body.classList.remove('automation-open');
     opener?.focus({preventScroll:true});
   });

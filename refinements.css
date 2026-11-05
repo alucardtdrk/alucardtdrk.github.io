@@ -13,9 +13,9 @@ body{font-family:Inter,Arial,sans-serif}button{font-family:inherit}header nav a{
 .automation-case:hover{transform:none}.automation-projects{overflow-anchor:none}
 
 /* Glass surfaces inspired by uiverse.io; tailored to this portfolio. */
-.automation-case{position:relative;overflow:hidden;border-radius:18px;background:radial-gradient(ellipse at top left,#af7ce512,transparent 65%),linear-gradient(145deg,#291a3d,#1b1228);box-shadow:inset 0 1px 0 #ead8ff0d}
-.automation-case:before{content:"";position:absolute;inset:0 24px auto;height:1px;background:linear-gradient(90deg,transparent,#d7b6ff70,transparent);pointer-events:none}
-.automation-case:hover,.automation-case:focus-within{border-color:#bd99ed99;box-shadow:0 12px 35px #0003,inset 0 1px 0 #ead8ff18}
+.project{position:relative;overflow:hidden;border-radius:18px;background:radial-gradient(ellipse at top left,#af7ce512,transparent 65%),linear-gradient(145deg,#291a3d,#1b1228);box-shadow:inset 0 1px 0 #ead8ff0d}
+.project:before{content:"";position:absolute;inset:0 24px auto;height:1px;background:linear-gradient(90deg,transparent,#d7b6ff70,transparent);pointer-events:none}
+.project:hover,.project:focus-within{border-color:#bd99ed99;box-shadow:0 12px 35px #0003,inset 0 1px 0 #ead8ff18}
 .automation-case>.tags{margin-bottom:20px}
 .automation-case:not(:first-child)>.case-metrics{display:none}
 .case-trigger{display:flex;align-items:center;justify-content:space-between;gap:24px;width:100%;min-height:52px;margin-top:4px;padding:14px 0 0;border:0;border-top:1px solid #a185c540;background:transparent;color:#eadcff;font-size:13px;font-weight:500;text-align:left;cursor:pointer}
@@ -50,13 +50,13 @@ html:has(.automation-dialog[open]){scrollbar-gutter:stable}
 
 .automation-case>.number{display:flex;align-items:center;gap:10px;min-height:24px}
 .case-category-icon{flex:none;color:#d8baff}
-.automation-case{isolation:isolate}
+.project{isolation:isolate}
 .automation-case>.case-metrics strong{color:#f0e3ff}
-.automation-case>*{position:relative;z-index:1}
-.automation-case:after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;background:radial-gradient(340px circle at var(--light-x,50%) var(--light-y,0%),#c99aff1c,transparent 75%);transition:opacity .25s}
-.automation-case:focus-within:after{opacity:1}
+.project>*{position:relative;z-index:1}
+.project:after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;background:radial-gradient(340px circle at var(--light-x,50%) var(--light-y,0%),#c99aff1c,transparent 75%);transition:opacity .25s}
+.project:focus-within:after{opacity:1}
 @media(min-width:761px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
-  .automation-case:hover:after{opacity:1}
+  .project:hover:after{opacity:1}
   .case-reveal-ready{transition:opacity .5s ease var(--reveal-delay,0ms),transform .5s ease var(--reveal-delay,0ms),border-color .25s,box-shadow .25s}
   .automation-case:nth-child(2n+3){--reveal-delay:70ms}
   .case-reveal-ready:not(.case-revealed):not(:focus-within){opacity:0;transform:translateY(12px)}
@@ -68,13 +68,15 @@ html:has(.automation-dialog[open]){scrollbar-gutter:stable}
   .automation-dialog[open] .flow-branches>span:before{transform-origin:top;animation:branch-light .4s ease-out both;animation-delay:calc(var(--flow-step,0)*70ms)}
 }
 @supports(mask-composite:exclude){
-  .automation-case:before{inset:0;height:auto;padding:1px;border-radius:inherit;background:radial-gradient(350px circle at var(--light-x,50%) var(--light-y,0%),#e1c5ff,#ac7fdb50 45%,transparent 75%);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;opacity:.35}
-  .automation-case:hover:before,.automation-case:focus-within:before{opacity:1}
+  .project:before{inset:0;height:auto;padding:1px;border-radius:inherit;background:radial-gradient(350px circle at var(--light-x,50%) var(--light-y,0%),#e1c5ff,#ac7fdb50 45%,transparent 75%);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;opacity:.35}
+  .project:hover:before,.project:focus-within:before{opacity:1}
 }
 @keyframes metric-light{from{border-color:#d4b0ff99;background:#c4a5ff16}to{border-color:#a185c540;background:#100b1933}}
 @keyframes flow-light{from{opacity:.35;border-color:#d4b0ff}to{opacity:1;border-color:#a185c54d}}
 @keyframes connection-light{from{opacity:0}to{opacity:1}}
 @keyframes branch-light{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-@media(max-width:760px),(hover:none),(prefers-reduced-motion:reduce){.automation-case:after{transition:none}}
+@media(max-width:760px),(hover:none),(prefers-reduced-motion:reduce){.project:after{transition:none}}
 
 .link-arrow{display:inline-block;vertical-align:-2px;flex-shrink:0;margin-left:4px}.text-link .link-arrow{vertical-align:-3px}@media(max-width:650px){html{scroll-padding-top:160px}.project-case{scroll-margin-top:170px}}
+
+.automation-dialog.is-closing::backdrop{animation:automation-backdrop-exit .22s ease-in forwards}@keyframes automation-backdrop-exit{to{background:transparent;backdrop-filter:blur(0)}}@media(prefers-reduced-motion:reduce){.automation-dialog.is-closing::backdrop{animation:none}}

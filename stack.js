@@ -98,7 +98,12 @@ scene.addEventListener('click', event => {
   if (!card || (dragged && event.detail !== 0)) return;
   const name = card.querySelector('span').textContent;
   const [subtitle, description, topics, label, url] = details[name];
-  dialog.querySelector('.skill-icon').src = card.querySelector('.stack-icon').dataset.src;
+  // Uma imagem nova evita exibir o ícone anterior enquanto o próximo carrega.
+  const icon = new Image(58, 58);
+  icon.className = 'skill-icon';
+  icon.alt = '';
+  icon.src = card.querySelector('.stack-icon').dataset.src;
+  dialog.querySelector('.skill-icon').replaceWith(icon);
   dialog.querySelector('#skill-name').textContent = name;
   dialog.querySelector('.skill-subtitle').textContent = subtitle;
   dialog.querySelector('.skill-description').textContent = description;

@@ -122,7 +122,7 @@ document.querySelectorAll('.project-case:not([hidden])').forEach(details=>{
   summary.addEventListener('click',event=>{event.preventDefault();setExpanded(!expanded);});
   detailControllers.set(details,setExpanded);
 });
-document.querySelector('a[href="#fluxora-case"]').addEventListener('click',()=>{detailControllers.get(projectDetails)(true);});
+document.querySelectorAll('a[href="#fluxora-case"],a[href="#knowflow-case"]').forEach(link=>{link.addEventListener('click',()=>{detailControllers.get(document.querySelector(link.hash))(true);});});
 
 const links=[...document.querySelectorAll('body > header nav a')];
 const sections=links.map(link=>document.querySelector(link.hash));
